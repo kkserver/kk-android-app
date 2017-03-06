@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="core-0.0.6">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/kk-app/build/intermediates/exploded-aar/kk/core/0.0.6/res" />
+      <root url="jar://$PROJECT_DIR$/kk-app/build/intermediates/exploded-aar/kk/core/0.0.6/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
