@@ -208,23 +208,23 @@ public class App extends Application {
             }
             _L.pushstring(m_szUniqueID);
         }
-        _L.rawget(-3);
+        _L.rawset(-3);
 
         _L.pushstring("name");
         _L.pushstring(Build.DISPLAY);
-        _L.rawget(-3);
+        _L.rawset(-3);
 
         _L.pushstring("model");
         _L.pushstring(Build.MODEL);
-        _L.rawget(-3);
+        _L.rawset(-3);
 
         _L.pushstring("systemName");
         _L.pushstring("Android");
-        _L.rawget(-3);
+        _L.rawset(-3);
 
         _L.pushstring("systemVersion");
         _L.pushstring(Build.VERSION.RELEASE);
-        _L.rawget(-3);
+        _L.rawset(-3);
 
         _L.setglobal("device");
 
