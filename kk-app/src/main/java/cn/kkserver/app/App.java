@@ -1,7 +1,13 @@
 package cn.kkserver.app;
 
 import android.app.Application;
+import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.res.AssetManager;
+import android.net.wifi.WifiManager;
+import android.os.Build;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,6 +15,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import cn.kkserver.lua.LuaState;
 import cn.kkserver.obs.lua.LuaObserver;
 import cn.kkserver.observer.IObserver;
@@ -31,6 +40,30 @@ public class App extends Application {
         super.onCreate();
 
         _L = new LuaState();
+
+        _L.pushfunction(new WeakLuaFunction<App>(this) {
+
+            @Override
+            public int invoke(LuaState L) {
+
+                int top = L.gettop();
+
+                StringBuilder sb = new StringBuilder();
+
+                for(int i=0;i<top;i++) {
+                    String v = L.tostring(-top + 1);
+                    if(v != null) {
+                        sb.append(v).append(" ");
+                    }
+                }
+
+                Log.d(TAG,sb.toString());
+
+                return 0;
+            }
+        });
+
+        _L.setglobal("print");
 
         _L.newtable();
 
@@ -104,6 +137,73 @@ public class App extends Application {
         _L.rawset(-3);
 
         _L.setglobal("app");
+
+
+        _L.newtable();
+
+        _L.pushstring("id");
+
+        {
+            TelephonyManager TelephonyMgr = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
+            String szImei = TelephonyMgr.getDeviceId();
+            String m_szDevIDShort = "35" + //we make this look like a valid IMEI
+                    Build.BOARD.length()%10 +
+                    Build.BRAND.length()%10 +
+                    Build.CPU_ABI.length()%10 +
+                    Build.DEVICE.length()%10 +
+                    Build.DISPLAY.length()%10 +
+                    Build.HOST.length()%10 +
+                    Build.ID.length()%10 +
+                    Build.MANUFACTURER.length()%10 +
+                    Build.MODEL.length()%10 +
+                    Build.PRODUCT.length()%10 +
+                    Build.TAGS.length()%10 +
+                    Build.TYPE.length()%10 +
+                    Build.USER.length()%10 ; //13 digits
+            String m_szAndroidID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+            WifiManager wm = (WifiManager)getSystemService(Context.WIFI_SERVICE);
+            String m_szWLANMAC = wm.getConnectionInfo().getMacAddress();
+            BluetoothAdapter m_BluetoothAdapter = null; // Local Bluetooth adapter
+            m_BluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+            String m_szBTMAC = m_BluetoothAdapter.getAddress();
+            String m_szLongID = szImei + m_szDevIDShort
+                    + m_szAndroidID+ m_szWLANMAC + m_szBTMAC;
+            MessageDigest m = null;
+            try {
+                m = MessageDigest.getInstance("MD5");
+            } catch (NoSuchAlgorithmException e) {
+                Log.d(TAG,Log.getStackTraceString(e));
+            }
+            m.update(m_szLongID.getBytes(),0,m_szLongID.length());
+            byte p_md5Data[] = m.digest();
+            String m_szUniqueID = new String();
+            for (int i=0;i<p_md5Data.length;i++) {
+                int b =  (0xFF & p_md5Data[i]);
+                if (b <= 0xF)
+                    m_szUniqueID+="0";
+                m_szUniqueID+=Integer.toHexString(b);
+            }
+            _L.pushstring(m_szUniqueID);
+        }
+        _L.rawget(-3);
+
+        _L.pushstring("name");
+        _L.pushstring(Build.DISPLAY);
+        _L.rawget(-3);
+
+        _L.pushstring("model");
+        _L.pushstring(Build.MODEL);
+        _L.rawget(-3);
+
+        _L.pushstring("systemName");
+        _L.pushstring("Android");
+        _L.rawget(-3);
+
+        _L.pushstring("systemVersion");
+        _L.pushstring(Build.VERSION.RELEASE);
+        _L.rawget(-3);
+
+        _L.setglobal("device");
 
     }
 
