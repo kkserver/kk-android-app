@@ -25,6 +25,9 @@ dependencies {
     compile 'kk:observer:0.0.7@aar'
     compile 'kk:lua:0.0.4@aar'
     compile 'kk:observer-lua:0.0.2@aar'
+    compile 'kk:http-lua:0.0.2@aar'
+    compile 'com.squareup.okhttp3:okhttp:3.6.0'
+    compile 'com.squareup.okio:okio:1.11.0'
 }
 
 apply plugin: 'maven'
@@ -34,7 +37,7 @@ uploadArchives {
         mavenDeployer {
             pom.groupId = "kk"
             pom.artifactId = "app"
-            pom.version = "0.0.7"
+            pom.version = "0.0.8"
             repository(url: RELEASE_REPOSITORY_URL) {
 
             }

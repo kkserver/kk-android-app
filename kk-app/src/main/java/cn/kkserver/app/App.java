@@ -18,6 +18,7 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import cn.kkserver.http.lua.LuaHttp;
 import cn.kkserver.lua.LuaState;
 import cn.kkserver.obs.lua.LuaObserver;
 import cn.kkserver.observer.IObserver;
@@ -229,6 +230,18 @@ public class App extends Application {
         _L.rawset(-3);
 
         _L.setglobal("device");
+
+        {
+            //http
+            _L.newtable();
+
+            _L.pushstring("__index");
+            _L.pushobject(new LuaHttp());
+            _L.rawset(-3);
+
+            _L.setglobal("http");
+        }
+
 
     }
 
