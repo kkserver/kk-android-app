@@ -148,9 +148,18 @@ public class App extends Application {
         _L.pushstring("id");
 
         {
-            TelephonyManager TelephonyMgr = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
-            String szImei = TelephonyMgr.getDeviceId();
-            String m_szDevIDShort = "35" + //we make this look like a valid IMEI
+            String szImei = "";
+            String m_szDevIDShort = "";
+            String m_szAndroidID = "";
+            String m_szWLANMAC = "";
+            String m_szBTMAC = "";
+
+            try {
+                TelephonyManager TelephonyMgr = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
+                szImei = TelephonyMgr.getDeviceId();
+            } catch (Throwable e){}
+
+            m_szDevIDShort = "35" + //we make this look like a valid IMEI
                     Build.BOARD.length()%10 +
                     Build.BRAND.length()%10 +
                     Build.DEVICE.length()%10 +
@@ -163,14 +172,25 @@ public class App extends Application {
                     Build.TAGS.length()%10 +
                     Build.TYPE.length()%10 +
                     Build.USER.length()%10 ; //13 digits
-            String m_szAndroidID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-            WifiManager wm = (WifiManager)getSystemService(Context.WIFI_SERVICE);
-            String m_szWLANMAC = wm.getConnectionInfo().getMacAddress();
-            BluetoothAdapter m_BluetoothAdapter = null; // Local Bluetooth adapter
-            m_BluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-            String m_szBTMAC = m_BluetoothAdapter.getAddress();
+
+            try {
+                m_szAndroidID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+            } catch(Throwable e){}
+
+            try {
+                WifiManager wm = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+                m_szWLANMAC = wm.getConnectionInfo().getMacAddress();
+            } catch(Throwable e){}
+
+            try {
+                BluetoothAdapter m_BluetoothAdapter = null; // Local Bluetooth adapter
+                m_BluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                m_szBTMAC = m_BluetoothAdapter.getAddress();
+            } catch (Throwable e){}
+
             String m_szLongID = szImei + m_szDevIDShort
                     + m_szAndroidID+ m_szWLANMAC + m_szBTMAC;
+
             MessageDigest m = null;
             try {
                 m = MessageDigest.getInstance("MD5");

@@ -34,7 +34,7 @@ uploadArchives {
         mavenDeployer {
             pom.groupId = "kk"
             pom.artifactId = "app"
-            pom.version = "0.0.4"
+            pom.version = "0.0.5"
             repository(url: RELEASE_REPOSITORY_URL) {
 
             }
