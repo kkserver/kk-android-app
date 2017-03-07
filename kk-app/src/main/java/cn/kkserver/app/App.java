@@ -136,6 +136,10 @@ public class App extends Application {
         });
         _L.rawset(-3);
 
+        _L.pushstring("document");
+        _L.pushstring(getDir("document",0777).getAbsolutePath());
+        _L.rawset(-3);
+
         _L.setglobal("app");
 
 
@@ -149,7 +153,6 @@ public class App extends Application {
             String m_szDevIDShort = "35" + //we make this look like a valid IMEI
                     Build.BOARD.length()%10 +
                     Build.BRAND.length()%10 +
-                    Build.CPU_ABI.length()%10 +
                     Build.DEVICE.length()%10 +
                     Build.DISPLAY.length()%10 +
                     Build.HOST.length()%10 +
