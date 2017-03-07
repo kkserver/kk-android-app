@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="observer-lua-0.0.2">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/kk-app/build/intermediates/exploded-aar/kk/observer-lua/0.0.2/res" />
-      <root url="jar://$PROJECT_DIR$/kk-app/build/intermediates/exploded-aar/kk/observer-lua/0.0.2/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/e6aaf3fe4c68858556c5fe56a8b712a1dc4d58cf/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/e6aaf3fe4c68858556c5fe56a8b712a1dc4d58cf/output/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

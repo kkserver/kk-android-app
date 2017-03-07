@@ -70,6 +70,39 @@ public class App extends Application {
         });
         _L.rawset(-3);
 
+        _L.pushstring("loadLibrary");
+        _L.pushfunction(new WeakLuaFunction<App>(this){
+            @Override
+            public int invoke(LuaState L) {
+
+                App app = weakObject();
+
+                if(app != null) {
+
+                    int top = L.gettop();
+
+                    if(top >0) {
+
+                        try {
+                            app.loadLibrary(L.tostring( - top));
+                            L.pushnil();
+                            return 1;
+                        } catch (Exception e) {
+                            L.pushstring(e.getMessage());
+                            Log.d(TAG,Log.getStackTraceString(e));
+                            return 1;
+                        }
+
+                    }
+                }
+
+                L.pushstring("Not Found");
+
+                return 1;
+            }
+        });
+        _L.rawset(-3);
+
         _L.setglobal("app");
 
     }
@@ -187,7 +220,7 @@ public class App extends Application {
         }
     }
 
-    public void loadContent(String uri) throws LuaException,IOException {
+    public void loadLibrary(String uri) throws LuaException,IOException {
         loadString(getContent(uri));
     }
 
