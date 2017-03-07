@@ -41,6 +41,8 @@ public class App extends Application {
 
         _L = new LuaState();
 
+        _L.openlibs();
+
         _L.pushfunction(new WeakLuaFunction<App>(this) {
 
             @Override
@@ -51,7 +53,7 @@ public class App extends Application {
                 StringBuilder sb = new StringBuilder();
 
                 for(int i=0;i<top;i++) {
-                    String v = L.tostring(-top + 1);
+                    String v = L.tostring(-top + i);
                     if(v != null) {
                         sb.append(v).append(" ");
                     }
