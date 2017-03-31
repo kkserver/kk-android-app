@@ -170,9 +170,11 @@ public class App extends Application {
             //http
             _L.newtable();
 
+            _L.newtable();
             _L.pushstring("__index");
             _L.pushobject(new LuaHttp());
             _L.rawset(-3);
+            _L.setmetatable(-2);
 
             _L.setglobal("http");
         }
