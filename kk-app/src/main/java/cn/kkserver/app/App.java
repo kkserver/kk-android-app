@@ -137,12 +137,51 @@ public class App extends Application {
         });
         _L.rawset(-3);
 
-        _L.pushstring("document");
-        _L.pushstring(getDir("document",0777).getAbsolutePath());
+        _L.pushstring("getDir");
+        _L.pushfunction(new WeakLuaFunction<App>(this){
+            @Override
+            public int invoke(LuaState L) {
+
+                App app = weakObject();
+
+                if(app != null) {
+
+                    int top = L.gettop();
+
+                    if(top >0) {
+
+                        L.pushstring(getDir(L.tostring( - top),0777).getAbsolutePath());
+
+                        return 1;
+
+                    }
+                }
+
+                L.pushnil();
+
+                return 1;
+            }
+        });
         _L.rawset(-3);
 
         _L.setglobal("app");
 
+        {
+            //http
+            _L.newtable();
+
+            _L.pushstring("__index");
+            _L.pushobject(new LuaHttp());
+            _L.rawset(-3);
+
+            _L.setglobal("http");
+        }
+
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
 
         _L.newtable();
 
@@ -229,22 +268,6 @@ public class App extends Application {
 
         _L.setglobal("device");
 
-        {
-            //http
-            _L.newtable();
-
-            _L.pushstring("__index");
-            _L.pushobject(new LuaHttp());
-            _L.rawset(-3);
-
-            _L.setglobal("http");
-        }
-
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
 
     }
 
