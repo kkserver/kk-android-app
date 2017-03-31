@@ -34,11 +34,9 @@ public class App extends Application {
     public final static Charset UTF8 = Charset.forName("utf-8");
     public final static int BUFFER_SIZE = 204800;
 
-    private LuaState _L;
+    private final LuaState _L;
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
+    public App() {
 
         _L = new LuaState();
 
@@ -242,12 +240,17 @@ public class App extends Application {
             _L.setglobal("http");
         }
 
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
 
     }
 
     @Override
     public void onTerminate() {
-        _L = null;
+        _L.gc();
         super.onTerminate();
     }
 

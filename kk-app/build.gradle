@@ -21,9 +21,9 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'kk:core:0.0.6@aar'
+    compile 'kk:core:0.0.9@aar'
     compile 'kk:observer:0.0.7@aar'
-    compile 'kk:lua:0.0.4@aar'
+    compile 'kk:lua:0.0.7@aar'
     compile 'kk:observer-lua:0.0.2@aar'
     compile 'kk:http-lua:0.0.2@aar'
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
@@ -37,7 +37,7 @@ uploadArchives {
         mavenDeployer {
             pom.groupId = "kk"
             pom.artifactId = "app"
-            pom.version = "0.0.8"
+            pom.version = "0.0.9"
             repository(url: RELEASE_REPOSITORY_URL) {
 
             }
